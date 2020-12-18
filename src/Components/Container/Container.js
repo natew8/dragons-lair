@@ -53,7 +53,7 @@ export default class Container extends Component {
   }
 
   getMyTreasure() {
-    axios.get('/api/treasure/dragon').then(res => {
+    axios.get('/api/treasure/user').then(res => {
       this.setState({
         treasures: {
           ...this.state.treasures,

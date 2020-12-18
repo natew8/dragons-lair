@@ -6,14 +6,13 @@ const authCtrl = require('./controllers/authController')
 const treasureCtrl = require('./controllers/treasureController')
 const auth = require('./middleware/authMiddleware')
 const { SESSION_SECRET, CONNECTION_STRING } = process.env
-const app = express()
 const PORT = 4000
+const app = express()
 app.use(express.json())
 app.use(session({
     resave: true,
     saveUninitialized: false,
-    secret: SESSION_SECRET,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 }
+    secret: SESSION_SECRET
 }))
 
 app.post('/auth/register', authCtrl.register)

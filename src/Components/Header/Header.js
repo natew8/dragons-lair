@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import './Header.css';
-import { compareSync } from 'bcryptjs';
 
 export default class Header extends Component {
   constructor() {
@@ -14,6 +13,7 @@ export default class Header extends Component {
     this.register = this.register.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
+    this.toggleAdmin = this.toggleAdmin.bind(this)
   }
 
   handleUsernameInput(value) {
@@ -47,13 +47,15 @@ export default class Header extends Component {
     axios.post('/auth/register', { username, password, isAdmin }).then(user => {
       this.setState({
         username: '',
-        password: ''
+        password: '',
+        isAdmin: false
       })
       this.props.updateUser(user.data)
     }).catch(err => {
       this.setState({
         username: '',
-        password: ''
+        password: '',
+        isAdmin: false
       })
       alert(err.response.request.response)
     })
@@ -62,6 +64,11 @@ export default class Header extends Component {
   logout() {
     axios.get('/auth/logout').then(() => {
       this.props.updateUser({})
+      this.setState({
+        username: '',
+        password: '',
+        isAdmin: false
+      })
     }).catch(err => {
       console.log(err)
     })
@@ -95,7 +102,7 @@ export default class Header extends Component {
                 onChange={e => this.handlePasswordInput(e.target.value)}
               />
               <div className="adminCheck">
-                <input type="checkbox" id="adminCheckbox" onChange={() => this.toggleAdmin()} /> <span> Admin </span>
+                <input type="checkbox" id="adminCheckbox" onChange={this.toggleAdmin} /> <span> Admin </span>
               </div>
               <button onClick={this.login}>Log In</button>
               <button onClick={this.register} id="reg">
